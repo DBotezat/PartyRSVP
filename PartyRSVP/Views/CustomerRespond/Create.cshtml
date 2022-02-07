@@ -1,0 +1,41 @@
+﻿ @model PartyRSVP.Models.PartyRSVP.Models.CustomerRespond
+ 
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <p>Name:</p>
+    @Html.TextBoxFor(c=>c.Name)<br/>
+    <p>Email:</p>
+    @Html.TextBoxFor(c=>c.Email)<br/>
+    <p>Phone:</p>
+    @Html.TextBoxFor(c=>c.Phone)<br/>
+    <p>Will you show up?:</p>
+    @Html.DropDownListFor(c=>c.Attend, new []{
+        new SelectListItem(){
+            Text = "Yes, I'm going", 
+            Value = bool.TrueString
+        }, 
+        new SelectListItem(){
+            Text = "No",
+            Value = bool.FalseString
+        }
+    }, "Choose an option")<br/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+}
+
+<hr />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
