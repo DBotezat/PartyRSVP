@@ -7,8 +7,6 @@ namespace PartyRSVP
         public static void Initialize(MyContext context)
         {
             context.Database.EnsureCreated();
-
-
         }
     }
 }

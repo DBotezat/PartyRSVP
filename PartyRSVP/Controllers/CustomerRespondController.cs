@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PartyRSVP.Models;
-using PartyRSVP.Models.PartyRSVP.Models;
+using System.Diagnostics;
 
 namespace PartyRSVP.Controllers
 {
@@ -83,36 +83,13 @@ namespace PartyRSVP.Controllers
             // To protect from overposting attacks, enable the specific properties you want to bind to.
             // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
             [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Edit(int id, [Bind("GuestRespondId,Name,Email,Phone,Attend")] CustomerRespond guestRespond)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, CustomerRespond guestRespond)
             {
-                if (id != guestRespond.GuestRespondId)
-                {
-                    return NotFound();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        _context.Update(guestRespond);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!GuestRespondExists(guestRespond.GuestRespondId))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(guestRespond);
-            }
+                _context.Update(guestRespond);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+        }
 
             // GET: GuestResponds/Delete/5
             public async Task<IActionResult> Delete(int? id)
@@ -135,15 +112,23 @@ namespace PartyRSVP.Controllers
             // POST: GuestResponds/Delete/5
             [HttpPost, ActionName("Delete")]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> DeleteConfirmed(int id)
-            {
-                var guestRespond = await _context.CustomerResponds.FindAsync(id);
-                _context.CustomerResponds.Remove(guestRespond);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+        /*      public IActionResult DeleteConfirmed(int? id)
+          {
+              var guestRespond = _context.CustomerResponds.Find(id);
+              _context.CustomerResponds.Remove(guestRespond);
+              _context.SaveChanges();
+              return RedirectToAction(nameof(Index));
+          }*/
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            var guestRespond = await _context.CustomerResponds.FindAsync(id);
+            _context.CustomerResponds.Remove(guestRespond);
 
-            private bool GuestRespondExists(int id)
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool GuestRespondExists(int id)
             {
                 return _context.CustomerResponds.Any(e => e.GuestRespondId == id);
             }

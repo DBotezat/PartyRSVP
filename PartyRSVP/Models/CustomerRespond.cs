@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PartyRSVP.Models
 {
-
-    namespace PartyRSVP.Models
-    {
         public class CustomerRespond
         {
             [Key]
@@ -21,4 +18,3 @@ namespace PartyRSVP.Models
 
         }
     }
-}

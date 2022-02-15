@@ -24,13 +24,16 @@ namespace PartyRSVP
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var connection = @"Server=HXTNYD3\SQLEXPRESS;Database=RSVP;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews();
+            var connectionString = Configuration.GetConnectionString("SQLConnection");
+            services.AddDbContext<MyContext>(
+                options => options.UseSqlServer(connectionString)
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -46,9 +49,9 @@ namespace PartyRSVP
             app.UseCookiePolicy();
 
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(services =>
             {
-                endpoints.MapControllerRoute("default", "{controller=CustomerRespond}/{action=Index}");
+                services.MapControllerRoute("default", "{controller=CustomerRespond}/{action=Index}");
             });
 
         }
